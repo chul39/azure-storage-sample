@@ -3,12 +3,12 @@ const { Base64Encode } = require('base64-stream')
 const { StorageSharedKeyCredential, BlobServiceClient } = require("@azure/storage-blob")
 
 /**
- * Sample azure storage class
+ * @module AzureStorage
  */
-class AzureStorage {
+module.exports = class AzureStorage {
 
   /**
-   * Constructor
+   * Constructor for AzureStorage
    * @param {string} accountName 
    * @param {string} accessKey 
    * @param {string} containerName
@@ -125,5 +125,3 @@ class AzureStorage {
   }
 
 }
-
-module.exports = AzureStorage
