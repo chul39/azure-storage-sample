@@ -31,7 +31,7 @@ module.exports = class AzureStorage {
     this.containerName = containerName
     this.credential = new StorageSharedKeyCredential(this.accountName, accessKey)
     this.blobServiceClient = new BlobServiceClient(`https://${this.accountName}.blob.core.windows.net`, this.credentials)
-    this.containerServiceClient = this.blobServiceClient.getContainerClient(containerName)
+    this.containerClient = this.blobServiceClient.getContainerClient(containerName)
   }
   
   /**
@@ -57,8 +57,8 @@ module.exports = class AzureStorage {
    */
   async uploadBlob(blobName, data) {
     try {
-      await this.containerServiceClient.createIfNotExists()
-      const blockBlobClient = this.containerServiceClient.getBlockBlobClient(blobName)
+      await this.containerClient.createIfNotExists()
+      const blockBlobClient = this.containerClient.getBlockBlobClient(blobName)
       const buffer = Buffer.from(data, 'base64')
       const response = await blockBlobClient.upload(buffer, buffer.byteLength)
       if (response._response.status !== 201) throw { status: response._response.status, message: response.errorCode }
@@ -75,8 +75,8 @@ module.exports = class AzureStorage {
    */
   async downloadBlob(blobName) {
     try {
-      await this.containerServiceClient.createIfNotExists()
-      const blockBlobClient = this.containerServiceClient.getBlockBlobClient(blobName)
+      await this.containerClient.createIfNotExists()
+      const blockBlobClient = this.containerClient.getBlockBlobClient(blobName)
       const response = await blockBlobClient.download(0)
       if (response._response.status !== 200) throw { status: response._response.status, message: response.errorCode }
       const base64 = await this.#streamToBase64(response.readableStreamBody)
@@ -93,8 +93,8 @@ module.exports = class AzureStorage {
    */
   async deleteBlob(blobName) {
     try {
-      await this.containerServiceClient.createIfNotExists()
-      const blockBlobClient = this.containerServiceClient.getBlockBlobClient(blobName)
+      await this.containerClient.createIfNotExists()
+      const blockBlobClient = this.containerClient.getBlockBlobClient(blobName)
       const response = await blockBlobClient.delete()
       if (response._response.status !== 200) throw { status: response._response.status, message: response.errorCode }
     } catch (err) {
@@ -110,9 +110,9 @@ module.exports = class AzureStorage {
    */
   async renameBlob(oldName, newName) {
     try {
-      await this.containerServiceClient.createIfNotExists()
-      const oldBlockBlobClient = this.containerServiceClient.getBlockBlobClient(oldName)
-      const newBlockBlobCLient = this.containerServiceClient.getBlockBlobClient(newName)
+      await this.containerClient.createIfNotExists()
+      const oldBlockBlobClient = this.containerClient.getBlockBlobClient(oldName)
+      const newBlockBlobCLient = this.containerClient.getBlockBlobClient(newName)
       const poller = await newBlockBlobCLient.beginCopyFromURL(oldBlockBlobClient.url)
       const pollerResponse = await poller.pollUntilDone()
       if (pollerResponse._response.status !== 200) throw { status: pollerResponse._response.status, message: pollerResponse.errorCode }
