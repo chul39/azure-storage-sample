@@ -15,7 +15,7 @@ module.exports = {
       return res.status(201).send({ status: 201, message: "Created" })
     } catch (err) {
       if (err && err.status && !isNaN(err.status)) return res.status(err.status).send(err)
-      else return res.status(500).send({ status: 500, message: "Internal server error" })
+      else return res.status(500).send({ status: 500, message: "Internal Server Error" })
     }
   },
 
@@ -26,12 +26,12 @@ module.exports = {
    */
   downloadBlob: async (req, res, next) => {
     try {
-      if (!req.query.name) throw { status: 400, message: "Bad request" }
+      if (!req.query.name) throw { status: 400, message: "Bad Request" }
       const data = await storageObject.downloadBlob(req.query.name)
       return res.status(200).send({ status: 200, message: "Ok", data: data })
     } catch (err) {
       if (err && err.status && !isNaN(err.status)) return res.status(err.status).send(err)
-      else return res.status(500).send({ status: 500, message: "Internal server error" })
+      else return res.status(500).send({ status: 500, message: "Internal Server Error" })
     }
   },
 
@@ -42,12 +42,12 @@ module.exports = {
    */
   deleteBlob: async (req, res, next) => {
     try {
-      if (!req.query.name) throw { status: 400, message: "Bad request" }
+      if (!req.query.name) throw { status: 400, message: "Bad Request" }
       await storageObject.deleteBlob(req.query.name)
       return res.status(200).send({ status: 200, message: "Ok" })
     } catch (err) {
       if (err && err.status && !isNaN(err.status)) return res.status(err.status).send(err)
-      else return res.status(500).send({ status: 500, message: "Internal server error" })
+      else return res.status(500).send({ status: 500, message: "Internal Server Error" })
     }
   },
 
@@ -58,12 +58,12 @@ module.exports = {
    */
   renameBlob: async (req, res, next) => {
     try {
-      if (!req.query.target || !req.query.name) throw { status: 400, message: "Bad request" }
+      if (!req.query.target || !req.query.name) throw { status: 400, message: "Bad Request" }
       await storageObject.renameBlob(req.query.target, req.query.name)
       return res.status(200).send({ status: 200, message: "Ok" })
     } catch (err) {
       if (err && err.status && !isNaN(err.status)) return res.status(err.status).send(err)
-      else return res.status(500).send({ status: 500, message: "Internal server error" })
+      else return res.status(500).send({ status: 500, message: "Internal Server Error" })
     }
   }
 

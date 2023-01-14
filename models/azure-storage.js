@@ -57,6 +57,7 @@ class AzureStorage {
    */
   async uploadBlob(blobName, data) {
     try {
+      await this.containerServiceClient.createIfNotExists()
       const blockBlobClient = this.containerServiceClient.getBlockBlobClient(blobName)
       const buffer = Buffer.from(data, 'base64')
       const response = await blockBlobClient.upload(buffer, buffer.byteLength)
@@ -74,6 +75,7 @@ class AzureStorage {
    */
   async downloadBlob(blobName) {
     try {
+      await this.containerServiceClient.createIfNotExists()
       const blockBlobClient = this.containerServiceClient.getBlockBlobClient(blobName)
       const response = await blockBlobClient.download(0)
       if (response._response.status !== 200) throw { status: response._response.status, message: response.errorCode }
@@ -91,6 +93,7 @@ class AzureStorage {
    */
   async deleteBlob(blobName) {
     try {
+      await this.containerServiceClient.createIfNotExists()
       const blockBlobClient = this.containerServiceClient.getBlockBlobClient(blobName)
       const response = await blockBlobClient.delete()
       if (response._response.status !== 200) throw { status: response._response.status, message: response.errorCode }
@@ -107,6 +110,7 @@ class AzureStorage {
    */
   async renameBlob(oldName, newName) {
     try {
+      await this.containerServiceClient.createIfNotExists()
       const oldBlockBlobClient = this.containerServiceClient.getBlockBlobClient(oldName)
       const newBlockBlobCLient = this.containerServiceClient.getBlockBlobClient(newName)
       const poller = await newBlockBlobCLient.beginCopyFromURL(oldBlockBlobClient.url)
