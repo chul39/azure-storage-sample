@@ -36,7 +36,8 @@ class AzureStorage {
   
   /**
    * Convert readable stream into base64 string.
-   * @return {ReadableStream}
+   * @param {ReadableStream} stream
+   * @return {string}
    */
   async #streamToBase64(stream) {
     return new Promise((resolve, reject) => {
