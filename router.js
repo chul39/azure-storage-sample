@@ -1,7 +1,10 @@
 const express = require("express")
-const SampleController = require("./controllers/sample-controller")
+const AzureStorageController = require("./controllers/azure-storage-controller")
 
 const router = express.Router()
-router.get("/", SampleController.sampleMethod)
+router.post("/upload", AzureStorageController.uploadBlob)
+router.get("/download", AzureStorageController.downloadBlob)
+router.delete("/delete", AzureStorageController.deleteBlob)
+router.put("/rename", AzureStorageController.renameBlob)
 
 module.exports = router

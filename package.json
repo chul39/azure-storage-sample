@@ -9,6 +9,9 @@
   "author": "Chunlaphat Suwannaat",
   "license": "ISC",
   "dependencies": {
+    "@azure/storage-blob": "^12.12.0",
+    "base64-stream": "^1.0.0",
+    "concat-stream": "^2.0.0",
     "dotenv": "^16.0.3",
     "express": "^4.18.2"
   }
