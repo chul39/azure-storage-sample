@@ -7,15 +7,20 @@ module.exports = {
    * Upload blob to storage as base64 string.
    * @param {Request} req 
    * @param {Response} res 
+   * @param {Function} next
    */
   uploadBlob: async (req, res, next) => {
     try {
       if (!req.body.name || !req.body.data) throw { status: 400, message: "Bad request" }
       await storageObject.uploadBlob(req.body.name, req.body.data)
-      return res.status(201).send({ status: 201, message: "Created" })
+      res.status(201).send({ status: 201, message: "Created" })
+      next()
+      return
     } catch (err) {
-      if (err && err.status && !isNaN(err.status)) return res.status(err.status).send(err)
-      else return res.status(500).send({ status: 500, message: "Internal Server Error" })
+      if (err && err.status && !isNaN(err.status)) res.status(err.status).send(err)
+      else res.status(500).send({ status: 500, message: "Internal Server Error" })
+      next()
+      return
     }
   },
 
@@ -23,15 +28,20 @@ module.exports = {
    * Download blob from storage as base64 string.
    * @param {Request} req 
    * @param {Response} res 
+   * @param {Function} next
    */
   downloadBlob: async (req, res, next) => {
     try {
       if (!req.query.name) throw { status: 400, message: "Bad Request" }
       const data = await storageObject.downloadBlob(req.query.name)
-      return res.status(200).send({ status: 200, message: "Ok", data: data })
+      res.status(200).send({ status: 200, message: "Ok", data: data })
+      next()
+      return
     } catch (err) {
-      if (err && err.status && !isNaN(err.status)) return res.status(err.status).send(err)
-      else return res.status(500).send({ status: 500, message: "Internal Server Error" })
+      if (err && err.status && !isNaN(err.status)) res.status(err.status).send(err)
+      else res.status(500).send({ status: 500, message: "Internal Server Error" })
+      next()
+      return
     }
   },
 
@@ -39,15 +49,20 @@ module.exports = {
    * Delete blob from storage.
    * @param {Request} req 
    * @param {Response} res 
+   * @param {Function} next
    */
   deleteBlob: async (req, res, next) => {
     try {
       if (!req.query.name) throw { status: 400, message: "Bad Request" }
       await storageObject.deleteBlob(req.query.name)
-      return res.status(200).send({ status: 200, message: "Ok" })
+      res.status(200).send({ status: 200, message: "Ok" })
+      next()
+      return
     } catch (err) {
-      if (err && err.status && !isNaN(err.status)) return res.status(err.status).send(err)
-      else return res.status(500).send({ status: 500, message: "Internal Server Error" })
+      if (err && err.status && !isNaN(err.status)) res.status(err.status).send(err)
+      else res.status(500).send({ status: 500, message: "Internal Server Error" })
+      next()
+      return
     }
   },
 
@@ -55,15 +70,20 @@ module.exports = {
    * Rename blob on storage.
    * @param {Request} req 
    * @param {Response} res 
+   * @param {Function} next
    */
   renameBlob: async (req, res, next) => {
     try {
       if (!req.query.target || !req.query.name) throw { status: 400, message: "Bad Request" }
       await storageObject.renameBlob(req.query.target, req.query.name)
-      return res.status(200).send({ status: 200, message: "Ok" })
+      res.status(200).send({ status: 200, message: "Ok" })
+      next()
+      return
     } catch (err) {
-      if (err && err.status && !isNaN(err.status)) return res.status(err.status).send(err)
-      else return res.status(500).send({ status: 500, message: "Internal Server Error" })
+      if (err && err.status && !isNaN(err.status)) res.status(err.status).send(err)
+      else res.status(500).send({ status: 500, message: "Internal Server Error" })
+      next()
+      return
     }
   }
 
